@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>社媒数据抓取器</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      width: 280px;
+      font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif;
+      background: #f7f8fa;
+      color: #333;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #ff2442 0%, #ff9800 100%);
+      padding: 16px;
+      color: #fff;
+      text-align: center;
+    }
+    .header h1 { font-size: 15px; font-weight: 700; }
+    .header p  { font-size: 11px; opacity: .85; margin-top: 4px; }
+
+    .section {
+      background: #fff;
+      margin: 10px;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,.08);
+    }
+    .section-title {
+      padding: 10px 14px 6px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #888;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+    }
+
+    .platform-card {
+      display: flex;
+      align-items: center;
+      padding: 10px 14px;
+      border-top: 1px solid #f0f0f0;
+      gap: 10px;
+    }
+    .platform-card:first-of-type { border-top: none; }
+
+    .platform-icon { font-size: 22px; flex-shrink: 0; }
+
+    .platform-info { flex: 1; }
+    .platform-name { font-size: 13px; font-weight: 600; }
+    .platform-desc { font-size: 11px; color: #999; margin-top: 2px; }
+
+    .stat-badge {
+      background: #f0f0f0;
+      border-radius: 8px;
+      padding: 3px 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #555;
+      min-width: 36px;
+      text-align: center;
+    }
+    .stat-badge.xhs { background: #fff0f2; color: #ff2442; }
+    .stat-badge.wx  { background: #f0fff4; color: #07c160; }
+
+    .open-btn {
+      padding: 5px 10px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 600;
+      color: #fff;
+      transition: opacity .15s;
+      white-space: nowrap;
+    }
+    .open-btn:hover { opacity: .8; }
+    .open-btn.xhs { background: #ff2442; }
+    .open-btn.wx  { background: #07c160; }
+
+    .footer {
+      padding: 10px 14px;
+      text-align: center;
+      font-size: 11px;
+      color: #bbb;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>📊 社媒数据抓取器</h1>
+    <p>小红书 & 微信公众号 批量导出工具</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">已缓存数据</div>
+
+    <div class="platform-card">
+      <div class="platform-icon">🍠</div>
+      <div class="platform-info">
+        <div class="platform-name">小红书创作者</div>
+        <div class="platform-desc">点赞 / 评论 / 收藏 / 分享</div>
+      </div>
+      <span class="stat-badge xhs" id="xhs-count">0</span>
+      <button class="open-btn xhs" id="open-xhs">打开</button>
+    </div>
+
+    <div class="platform-card">
+      <div class="platform-icon">💬</div>
+      <div class="platform-info">
+        <div class="platform-name">微信公众号</div>
+        <div class="platform-desc">阅读 / 点赞 / 在看 / 留言</div>
+      </div>
+      <span class="stat-badge wx" id="wx-count">0</span>
+      <button class="open-btn wx" id="open-wx">打开</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">使用说明</div>
+    <div style="padding: 8px 14px 12px; font-size: 11px; color: #666; line-height: 1.7;">
+      1. 点击「打开」跳转到对应平台<br>
+      2. 在页面右上角悬浮面板操作<br>
+      3. 支持手动搜集或自动翻页抓取<br>
+      4. 完成后点击「导出 Excel 并清空」
+    </div>
+  </div>
+
+  <div class="footer">v1.0.0 · 数据仅存于本地</div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

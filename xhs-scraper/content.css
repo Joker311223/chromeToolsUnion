@@ -1,0 +1,148 @@
+#xhs-panel {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 2147483647;
+    background: #fff;
+    padding: 14px 16px;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, .18);
+    border: 1px solid #ffe0e6;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 270px;
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+    font-size: 13px;
+    line-height: 1.4;
+    box-sizing: border-box;
+}
+
+#xhs-panel * {
+    box-sizing: border-box;
+}
+
+#xhs-panel-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #ff2442;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#xhs-badge {
+    background: #ff2442;
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.xhs-row {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.xhs-btn {
+    padding: 6px 10px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    color: #fff;
+    transition: opacity .15s;
+    white-space: nowrap;
+    font-weight: 600;
+    outline: none;
+}
+
+.xhs-btn:hover {
+    opacity: .8;
+}
+
+.xhs-btn:active {
+    opacity: .6;
+}
+
+#xhs-collect-btn {
+    background: #ff2442;
+    flex: 1;
+}
+
+#xhs-auto-btn {
+    background: #ff9800;
+    flex: 1.2;
+}
+
+#xhs-stop-btn {
+    background: #888;
+    flex: 1;
+}
+
+#xhs-export-btn {
+    background: #12b886;
+    width: 100%;
+}
+
+#xhs-clear-btn {
+    background: #aaa;
+    width: 100%;
+}
+
+#xhs-input-page {
+    width: 44px;
+    padding: 4px 6px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 12px;
+    outline: none;
+    color: #333;
+}
+
+#xhs-input-page:focus {
+    border-color: #ff2442;
+}
+
+#xhs-status {
+    font-size: 11px;
+    color: #d4380d;
+    text-align: center;
+    font-weight: 600;
+    min-height: 16px;
+    line-height: 1.4;
+    word-break: break-all;
+}
+
+.xhs-divider {
+    border: none;
+    border-top: 1px solid #f0f0f0;
+    margin: 0;
+}
+
+#xhs-toggle-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 2147483647;
+    background: #ff2442;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(255, 36, 66, .4);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    transition: opacity .15s;
+}
+
+#xhs-toggle-btn:hover {
+    opacity: .85;
+}

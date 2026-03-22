@@ -1,0 +1,36 @@
+{
+  "manifest_version": 3,
+  "name": "社媒数据批量抓取器",
+  "version": "1.0.0",
+  "description": "支持小红书创作者平台 & 微信公众号后台批量抓取文章数据，自动翻页并导出 Excel",
+  "permissions": ["storage", "activeTab", "scripting"],
+  "host_permissions": [
+    "https://creator.xiaohongshu.com/*",
+    "https://mp.weixin.qq.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://creator.xiaohongshu.com/*"],
+      "js": ["lib/xlsx.full.min.js", "scripts/xhs.js"],
+      "run_at": "document_end"
+    },
+    {
+      "matches": ["https://mp.weixin.qq.com/cgi-bin/appmsgpublish*"],
+      "js": ["lib/xlsx.full.min.js", "scripts/wechat.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}
