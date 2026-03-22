@@ -96,6 +96,37 @@
     <p>小红书 & 微信公众号 批量导出工具</p>
   </div>
 
+  <!-- 用户中心 -->
+  <div class="section" id="user-section">
+    <div class="section-title">用户中心</div>
+    <div class="platform-card" id="login-view">
+      <div class="platform-icon">👤</div>
+      <div class="platform-info">
+        <div class="platform-name">未登录</div>
+        <div class="platform-desc">登录后可查看会员状态</div>
+      </div>
+      <button class="open-btn xhs" id="login-btn">微信登录</button>
+    </div>
+    <div class="platform-card" id="profile-view" style="display: none;">
+      <div class="platform-icon">👑</div>
+      <div class="platform-info">
+        <div class="platform-name" id="user-name">微信用户</div>
+        <div class="platform-desc" id="user-status">普通用户 (本月剩余 2 次)</div>
+      </div>
+      <button class="open-btn wx" id="upgrade-btn">开通会员</button>
+    </div>
+  </div>
+
+  <!-- 二维码弹窗 -->
+  <div id="qr-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; flex-direction: column; align-items: center; justify-content: center; color: #fff;">
+    <div style="background: #fff; padding: 20px; border-radius: 12px; text-align: center; color: #333;">
+      <h3 id="qr-title">微信扫码登录</h3>
+      <img id="qr-image" style="width: 200px; height: 200px; margin: 10px 0;">
+      <p style="font-size: 12px; color: #666;">请使用微信扫描上方二维码</p>
+      <button id="close-qr" style="margin-top: 15px; padding: 8px 20px; border: none; background: #eee; border-radius: 6px; cursor: pointer;">关闭</button>
+    </div>
+  </div>
+
   <div class="section">
     <div class="section-title">已缓存数据</div>
 

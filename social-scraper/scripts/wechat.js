@@ -19,25 +19,32 @@
         const data = getStorageData();
         if (data.length === 0) { alert('暂无数据，请先搜集文章！'); return; }
 
-        const ws = XLSX.utils.json_to_sheet(data);
-        ws['!cols'] = [
-            { wch: 40 },
-            { wch: 60 },
-            { wch: 10 },
-            { wch: 10 },
-            { wch: 10 },
-            { wch: 10 },
-            { wch: 10 },
-            { wch: 10 },
-            { wch: 20 },
-        ];
+        // 检查下载限制
+        chrome.runtime.sendMessage({ type: 'CHECK_DOWNLOAD_LIMIT' }, (response) => {
+            if (response && response.success) {
+                const ws = XLSX.utils.json_to_sheet(data);
+                ws['!cols'] = [
+                    { wch: 40 },
+                    { wch: 60 },
+                    { wch: 10 },
+                    { wch: 10 },
+                    { wch: 10 },
+                    { wch: 10 },
+                    { wch: 10 },
+                    { wch: 10 },
+                    { wch: 20 },
+                ];
 
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, '微信公众号数据');
-        XLSX.writeFile(wb, `微信数据导出_${data.length}条_${Date.now()}.xlsx`);
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, '微信公众号数据');
+                XLSX.writeFile(wb, `微信数据导出_${data.length}条_${Date.now()}.xlsx`);
 
-        localStorage.removeItem(CACHE_KEY);
-        updateUI();
+                localStorage.removeItem(CACHE_KEY);
+                updateUI();
+            } else {
+                alert(response ? response.error : '下载失败，请重试');
+            }
+        });
     };
 
     const collectCurrentPage = () => {

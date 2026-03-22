@@ -4,6 +4,9 @@
   "version": "1.0.0",
   "description": "支持小红书创作者平台 & 微信公众号后台批量抓取文章数据，自动翻页并导出 Excel",
   "permissions": ["storage", "activeTab", "scripting"],
+  "background": {
+    "service_worker": "background.js"
+  },
   "host_permissions": [
     "https://creator.xiaohongshu.com/*",
     "https://mp.weixin.qq.com/*"

@@ -93,26 +93,33 @@
         const data = getData();
         if (data.length === 0) { alert('暂无数据，请先搜集文章！'); return; }
 
-        const ws = XLSX.utils.json_to_sheet(data);
-        ws['!cols'] = [
-            { wch: 6  },
-            { wch: 40 },
-            { wch: 16 },
-            { wch: 8  },
-            { wch: 8  },
-            { wch: 8  },
-            { wch: 8  },
-            { wch: 60 },
-            { wch: 80 },
-            { wch: 20 },
-        ];
+        // 检查下载限制
+        chrome.runtime.sendMessage({ type: 'CHECK_DOWNLOAD_LIMIT' }, (response) => {
+            if (response && response.success) {
+                const ws = XLSX.utils.json_to_sheet(data);
+                ws['!cols'] = [
+                    { wch: 6  },
+                    { wch: 40 },
+                    { wch: 16 },
+                    { wch: 8  },
+                    { wch: 8  },
+                    { wch: 8  },
+                    { wch: 8  },
+                    { wch: 60 },
+                    { wch: 80 },
+                    { wch: 20 },
+                ];
 
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, '小红书数据');
-        XLSX.writeFile(wb, `小红书数据导出_${data.length}条_${Date.now()}.xlsx`);
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, '小红书数据');
+                XLSX.writeFile(wb, `小红书数据导出_${data.length}条_${Date.now()}.xlsx`);
 
-        localStorage.removeItem(CACHE_KEY);
-        updateBadge();
+                localStorage.removeItem(CACHE_KEY);
+                updateBadge();
+            } else {
+                alert(response ? response.error : '下载失败，请重试');
+            }
+        });
     };
 
     let countdownTimer = null;
