@@ -84,7 +84,8 @@ export function createTabReuse(api, reportError = error =>
     }
 
     const qualifiers = details.transitionQualifiers ?? [];
-    if (qualifiers.includes('from_address_bar')) return;
+    // Reload is never deduplicated: our own reload must not start a reuse loop.
+    if (qualifiers.includes('from_address_bar') || details.transitionType === 'reload') return;
     if (!await isEnabled()) return;
 
     const order = metadata?.order ?? 0;
@@ -116,8 +117,14 @@ export function createTabReuse(api, reportError = error =>
     const canClose = firstNavigation && !source.pinned &&
       details.transitionType !== 'reload' && !qualifiers.includes('forward_back');
     const finalTarget = await tabOrNull(target.id);
-    const finalSource = await sourceIsCurrent(details, key);
     if (!finalTarget || !atUrl(finalTarget, key) || !finalTarget.active ||
+        !await isEnabled()) return;
+
+    // Reload only after activation succeeds; preserve source if reload fails.
+    await api.tabs.reload(target.id);
+    const refreshedTarget = await tabOrNull(target.id);
+    const finalSource = await sourceIsCurrent(details, key);
+    if (!refreshedTarget || !atUrl(refreshedTarget, key) || !refreshedTarget.active ||
         !await isEnabled()) return;
 
     let sourceClosed = false;
@@ -129,7 +136,7 @@ export function createTabReuse(api, reportError = error =>
     }
     // A failed notification must never prevent switching or duplicate cleanup.
     try {
-      await onReused({ targetTabId: target.id, sourceClosed });
+      await onReused({ targetTabId: target.id, sourceClosed, refreshed: true });
     } catch (error) { reportError(error); }
   }
 

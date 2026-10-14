@@ -17,8 +17,8 @@ function renderRecent(lastReuse) {
     month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'
   });
   document.querySelector('#recent-message').textContent = lastReuse.sourceClosed
-    ? '已定位到已有标签，并关闭新建的重复标签。'
-    : '已定位到已有标签，来源标签已保留。';
+    ? `已定位${lastReuse.refreshed ? '并刷新' : ''}已有标签，并关闭新建的重复标签。`
+    : `已定位${lastReuse.refreshed ? '并刷新' : ''}已有标签，来源标签已保留。`;
 }
 
 function showError() {

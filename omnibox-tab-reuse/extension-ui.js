@@ -31,10 +31,10 @@ export function createExtensionUI(api) {
         await api.notifications.create('tab-reuse-latest', {
           type: 'basic',
           iconUrl: api.runtime.getURL('icons/icon-128.png'),
-          title: '已定位到已有标签',
+          title: result.refreshed ? '已定位并刷新已有标签' : '已定位到已有标签',
           message: result.sourceClosed
-            ? '该网址已经打开，已切换到已有标签，并关闭新建的重复标签。'
-            : '该网址已经打开，已切换到已有标签。来源标签已保留。',
+            ? `该网址已经打开，已切换${result.refreshed ? '并刷新' : ''}已有标签，并关闭新建的重复标签。`
+            : `该网址已经打开，已切换${result.refreshed ? '并刷新' : ''}已有标签。来源标签已保留。`,
           silent: true
         });
       });

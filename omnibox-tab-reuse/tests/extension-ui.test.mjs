@@ -73,3 +73,12 @@ test('opening popup clears reuse badge without losing recent record', async () =
   assert.deepEqual(h.calls.find(([name]) => name === 'setBadgeText')[1], { text: '' });
   assert.equal(h.session.lastReuse.targetTabId, 7);
 });
+
+test('refreshed reuse notice and recent record describe the refresh', async () => {
+  const h = harness();
+  await h.ui.notifyReuse({ targetTabId: 7, sourceClosed: true, refreshed: true });
+  const notice = h.calls.find(([name]) => name === 'notice')[1];
+  assert.match(notice.title, /刷新/);
+  assert.match(notice.message, /切换并刷新/);
+  assert.equal(h.session.lastReuse.refreshed, true);
+});

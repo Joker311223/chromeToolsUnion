@@ -4,7 +4,7 @@ Chrome 扩展工具集合，各目录为独立扩展。
 
 | 扩展目录 | 说明 |
 | --- | --- |
-| [omnibox-tab-reuse](./omnibox-tab-reuse/) | 已有标签定位：地址栏导航放行，其他导航命中相同网址时聚焦已有标签；支持启停开关和定位通知。 |
+| [omnibox-tab-reuse](./omnibox-tab-reuse/) | 已有标签定位：地址栏导航放行，其他导航命中相同网址时聚焦并刷新已有标签；支持启停开关和定位通知。 |
 | [social-scraper](./social-scraper/) | 原有插件 |
 | [xhs-scraper](./xhs-scraper/) | 原有插件 |
 

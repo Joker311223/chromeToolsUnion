@@ -16,7 +16,7 @@ function event(id, extra = {}) {
 function harness(initialTabs) {
   const tabs = new Map(initialTabs.map(t => [t.id, { ...t }]));
   const saved = {};
-  const calls = { activate: [], focus: [], remove: [], errors: [] };
+  const calls = { activate: [], focus: [], reload: [], remove: [], errors: [] };
   const hooks = {};
   const api = {
     storage: { session: {
@@ -38,6 +38,13 @@ function harness(initialTabs) {
         calls.activate.push(id);
         hooks.afterActivate?.();
         return { ...target };
+      },
+      async reload(id) {
+        if (hooks.failReload) throw new Error('Reload failed');
+        assert.equal(tabs.get(id)?.active, true, 'Target must be active before reload');
+        assert.equal(calls.focus.length > 0, true, 'Window must be focused before reload');
+        calls.reload.push(id);
+        hooks.afterReload?.();
       },
       async remove(id) { calls.remove.push(id); tabs.delete(id); }
     },
@@ -198,9 +205,9 @@ test('activation or window focus failure never closes source', async () => {
   }
 });
 
-test('pinned source, reload and forward/back are never closed', async () => {
+test('pinned source and forward/back are never closed', async () => {
   for (const [sourceExtra, eventExtra] of [
-    [{ pinned: true }, {}], [{}, { transitionType: 'reload' }],
+    [{ pinned: true }, {}],
     [{}, { transitionQualifiers: ['forward_back'] }]
   ]) {
     const h = harness([tab(1), tab(2, A, sourceExtra)]);
@@ -266,7 +273,7 @@ test('disabled mode does not switch or close and consumes initial navigation', a
   await reuse.committed(event(2));
   assert.deepEqual(h.calls.activate, [1]);
   assert.deepEqual(h.calls.remove, []);
-  assert.deepEqual(reused, [{ targetTabId: 1, sourceClosed: false }]);
+  assert.deepEqual(reused, [{ targetTabId: 1, sourceClosed: false, refreshed: true }]);
 });
 
 test('successful duplicate reuse emits one notice after closing new source', async () => {
@@ -278,7 +285,7 @@ test('successful duplicate reuse emits one notice after closing new source', asy
   } });
   await reuse.created(tab(2));
   await reuse.committed(event(2));
-  assert.deepEqual(reused, [{ targetTabId: 1, sourceClosed: true }]);
+  assert.deepEqual(reused, [{ targetTabId: 1, sourceClosed: true, refreshed: true }]);
 });
 
 test('address bar and no-match cases never emit a reuse notice', async () => {
@@ -321,4 +328,41 @@ test('notification failure cannot undo reuse or duplicate cleanup', async () => 
   assert.deepEqual(h.calls.activate, [1]);
   assert.deepEqual(h.calls.remove, [2]);
   assert.deepEqual(h.calls.errors, ['Notifications denied']);
+});
+
+test('reuse refreshes target once and refresh events never cause a loop', async () => {
+  const h = harness([tab(1), tab(2)]);
+  await h.reuse.committed(event(2));
+  assert.deepEqual(h.calls.reload, [1]);
+  await h.reuse.committed(event(1, { transitionType: 'reload' }));
+  assert.deepEqual(h.calls.activate, [1]);
+  assert.deepEqual(h.calls.reload, [1]);
+  assert.deepEqual(h.calls.remove, []);
+});
+
+test('refresh failure preserves source and skips success notice', async () => {
+  const h = harness([tab(1), tab(2)]);
+  h.hooks.failReload = true;
+  const reused = [];
+  const reuse = h.make({ onReused: async r => reused.push(r) });
+  await reuse.created(tab(2));
+  await reuse.committed(event(2));
+  assert.deepEqual(h.calls.activate, [1]);
+  assert.deepEqual(h.calls.remove, []);
+  assert.deepEqual(h.calls.errors, ['Reload failed']);
+  assert.deepEqual(reused, []);
+});
+
+test('source or target changing during reload preserves source', async () => {
+  for (const change of ['source', 'target']) {
+    const h = harness([tab(1), tab(2)]);
+    h.hooks.afterReload = () => {
+      if (change === 'source') h.tabs.get(2).documentId = 'new-source-doc';
+      else h.tabs.get(1).url = B;
+    };
+    await h.reuse.created(tab(2));
+    await h.reuse.committed(event(2));
+    assert.deepEqual(h.calls.reload, [1]);
+    assert.deepEqual(h.calls.remove, []);
+  }
 });
