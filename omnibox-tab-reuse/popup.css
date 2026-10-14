@@ -1,0 +1,28 @@
+:root { font: 13px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #172b36; background: #f7faf9; }
+* { box-sizing: border-box; }
+body { width: 332px; margin: 0; }
+header { display: flex; align-items: center; gap: 12px; padding: 23px 20px 20px; }
+h1, h2, p { margin: 0; }
+h1 { font-size: 17px; font-weight: 650; letter-spacing: -.3px; }
+header p { margin-top: 3px; color: #687a80; font-size: 11px; }
+main { padding: 0 20px 20px; }
+.control { display: flex; justify-content: space-between; align-items: center; padding: 17px 16px; background: white; border: 1px solid #dce7e3; border-radius: 12px; }
+h2 { font-size: 13px; font-weight: 600; }
+#status { margin-top: 3px; font-size: 12px; color: #60777a; }
+.switch { display: flex; align-items: center; width: 46px; height: 27px; padding: 3px; border: 0; border-radius: 16px; background: #a3afb4; cursor: pointer; flex-shrink: 0; }
+.switch span { width: 21px; height: 21px; border-radius: 50%; background: white; box-shadow: 0 1px 3px #0002; transition: transform .15s; }
+.switch[aria-checked="true"] { background: #0f766e; }
+.switch[aria-checked="true"] span { transform: translateX(19px); }
+.switch:focus-visible { outline: 3px solid #6cd6bf; outline-offset: 3px; }
+.switch:disabled { opacity: .55; cursor: wait; }
+.hint { margin: 13px 1px 19px; font-size: 12px; color: #687a80; }
+.recent { padding-top: 15px; border-top: 1px solid #dce7e3; }
+.recent h2 { display: flex; justify-content: space-between; font-size: 12px; }
+#recent-time { font-weight: 400; color: #7c8c90; font-size: 10px; }
+#recent-message { margin-top: 7px; color: #687a80; font-size: 12px; }
+#error { margin-top: 12px; color: #b42318; font-size: 12px; }
+footer { display: flex; align-items: center; gap: 6px; padding: 10px 20px; border-top: 1px solid #dce7e3; color: #687a80; font-size: 11px; }
+.dot { width: 6px; height: 6px; border-radius: 50%; background: #a3afb4; }
+.dot.enabled { background: #0f766e; }
+.version { margin-left: auto; }
+@media (prefers-reduced-motion: reduce) { .switch span { transition: none; } }
